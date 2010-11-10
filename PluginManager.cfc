@@ -4,7 +4,7 @@
 	
 	<cffunction name="init">
 		
-		<cfset this.version = "1.0,1.0.1,1.0.2,1.0.3">
+		<cfset this.version = "1.0,1.0.1,1.0.2,1.0.3,1.0.4,1.0.5,1.1">
 		<cfreturn this>
 		
 	</cffunction>
@@ -15,7 +15,7 @@
 		<cfargument name="pluginId" type="string" hint="ID of plugin to install.">
 		<cfargument name="pluginFilename" type="string" hint="Filename of plugin to install.">
 		
-		<cfset var loc = StructNew()>
+		<cfset var loc = {}>
 		
 		<!--- Get file from website --->
 		<cfhttp
@@ -47,7 +47,7 @@
 	
 	<cffunction name="getAvailablePlugins" returntype="array" hint="Fetches a list of plugins from the database at CFWheels.org.">
 	
-		<cfset var loc = StructNew()>
+		<cfset var loc = {}>
 		
 		<!--- store all plugins in an array --->
 		<cfset loc.plugins = ArrayNew(1)>

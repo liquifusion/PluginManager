@@ -1,12 +1,17 @@
 <cfoutput>
-#startFormTag(method="get")#
-	#hiddenFieldTag(name="controller", value="wheels")#
-	#hiddenFieldTag(name="action", value="wheels")#
-	#hiddenFieldTag(name="view", value="plugins")#
-	#hiddenFieldTag(name="name", value="pluginmanager")#
 
-	<p>#passwordFieldTag(name="password")#
-	#submitTag("Launch Plugin")#
+<form action="rewrite.cfm" method="get">
+	<div>
+		<input type="hidden" name="controller" value="wheels" />
+		<input type="hidden" name="action" value="wheels" />
+		<input type="hidden" name="view" value="plugins" />
+		<input type="hidden" name="name" value="pluginmanager" />
+	</div>
+
+	<p>
+		<input type="password" name="reloadPassword" />
+		<input type="submit" value="Launch Plugin" />
 	</p>
-#endFormTag()#
+</form>
+
 </cfoutput>

@@ -4,18 +4,17 @@
 
 <cfinclude template="css.cfm">
 
-<h1>PluginManager</h1>
-<p>With the PluginManager, you can download and install all authorized plugins available from the <a href="http://cfwheels.org/plugins">Wheels&nbsp;Plugin&nbsp;Directory</a>. The &quot;Auto Install&quot; links below will automatically download the plugin to this Wheels install and reload your application.</p>
+<h1>PluginManager v1.0</h1>
+<p>With the PluginManager, you can download and install all authorized plugins available from the <a href="http://cfwheels.org/plugins">Wheels&nbsp;Plugin&nbsp;Directory</a>. The &quot;Auto Install&quot; links provided will automatically download the plugin to this Wheels install and reload your application.</p>
 
 </cfoutput>
 
-<!--- simple layer of security for installing plugins --->
+<!--- Simple layer of security for installing plugins --->
 <cfset isAccessBlocked=false>
 <cfinclude template="restrict/index.cfm">
 
 <!--- only install a plugin or list the plugins if the accessBlocked flag has not been set --->
-<cfif NOT isAccessBlocked>
-
+<cfif not isAccessBlocked>
 	<!--- Existence of url.plugin means that the user wants to auto-install the plugin of that ID --->
 	<cfif StructKeyExists(url, "plugin")>
 		<cfset application.wheels.plugins.pluginManager.installPlugin(ListFirst(url.plugin, ","), ListLast(url.plugin, ","))>
@@ -72,7 +71,7 @@
 	</cfloop>
 	
 	<!--- List plugins not installed --->
-	<h2>Available Plugins</h2>
+	<h2>Other Available Plugins</h2>
 	<cfloop array="#plugins#" index="plugin">
 		<cfif not ListFindNoCase(pluginNames(), plugin.name.XmlText)>
 			<div class="plugin">
@@ -91,7 +90,6 @@
 			</div>
 		</cfif>
 	</cfloop>
-	
 	
 	</cfoutput>
 </cfif>
