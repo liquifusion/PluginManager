@@ -4,7 +4,7 @@
 
 <cfinclude template="css.cfm">
 
-<h1>PluginManager v1.0</h1>
+<h1>PluginManager v1.0.1</h1>
 <p>With the PluginManager, you can download and install all authorized plugins available from the <a href="http://cfwheels.org/plugins">Wheels&nbsp;Plugin&nbsp;Directory</a>. The &quot;Auto Install&quot; links provided will automatically download the plugin to this Wheels install and reload your application.</p>
 
 </cfoutput>
