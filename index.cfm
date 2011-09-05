@@ -1,10 +1,13 @@
 <cfsetting enablecfoutputonly="true">
 
+<cfset pluginManager = {}>
+<cfset pluginManager.version = "1.0.5">
+
 <cfoutput>
 
 <cfinclude template="css.cfm">
 
-<h1>PluginManager v1.0.5</h1>
+<h1>PluginManager v#pluginManager.version#</h1>
 <p>With the PluginManager, you can download and install all authorized plugins available from the <a href="http://cfwheels.org/plugins">Wheels&nbsp;Plugin&nbsp;Directory</a>. The &quot;Auto Install&quot; links provided will automatically download the plugin to this Wheels install and reload your application.</p>
 
 </cfoutput>
@@ -13,7 +16,7 @@
 <cfset isAccessBlocked=false>
 <cfinclude template="restrict/index.cfm">
 
-<!--- only install a plugin or list the plugins if the accessBlocked flag has not been set --->
+<!--- Only install a plugin or list the plugins if the accessBlocked flag has not been set --->
 <cfif not isAccessBlocked>
 	<!--- Existence of url.plugin means that the user wants to auto-install the plugin of that ID --->
 	<cfif StructKeyExists(url, "plugin")>
@@ -29,24 +32,19 @@
 	<h2>Installed Plugins</h2>
 	<cfloop array="#plugins#" index="plugin">
 		<cfif ListFindNoCase(pluginNames(), plugin.name.XmlText)>
+			<!--- Grab plugin version number (which is done differently, depending on Wheels version --->
+			<cfset pluginManager.loc.versionNum = application.wheels.plugins.pluginManager.getPluginVersionNumber(plugin.name.XmlText, plugin.version.XmlText)>
 			<div class="plugin">
 				<h3>
 					<a href="#plugin.info_url.XmlText#">#plugin.title.XmlText#</a>
-					<cfif 
-						StructKeyExists(application.wheels.plugins, plugin.name.XmlText)
-						and application.wheels.plugins[plugin.name.XmlText].version neq plugin.version.XmlText
-					>
-						<small>Version #application.wheels.plugins[plugin.name.XmlText].version#</small>
-					<cfelse>
-						<small>Version #plugin.version.XmlText#</small>
-					</cfif>
+					<small>Version #pluginManager.loc.versionNum#</small>
 				</h3>
 				<p>#plugin.summary.XmlText#</p>
 				<ul style="margin-left: 0;">
 					<!--- Display upgrade link if newer version available --->
 					<cfif
 						StructKeyExists(application.wheels.plugins, plugin.name.XmlText)
-						and application.wheels.plugins[plugin.name.XmlText].version neq plugin.version.XmlText
+						and pluginManager.loc.versionNum neq plugin.version.XmlText
 					>
 						<li class="first">
 							<strong class="highlighter">Version #plugin.version.XmlText# Available:</strong>

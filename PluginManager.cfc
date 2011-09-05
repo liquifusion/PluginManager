@@ -65,5 +65,51 @@
 	</cffunction>
 	
 	<!----------------------------------------------------->
+	
+	<cffunction name="getPluginVersionNumber" returntype="string" hint="Returns the current version number of a given plugin that's already installed in this application.">
+		<cfargument name="pluginName" type="string" required="true" hint="Plugins name to search for.">
+		<cfargument name="serviceVersionNum" type="string" required="true" hint="Current plugin version as reported by web service.">
+		
+		<cfset var loc = {}>
+		<cfset loc.plugins = application.wheels.plugins>
+		
+		<!--- Wheels 1.1.3- stores plugin version number --->
+		<cfif
+			StructKeyExists(loc.plugins, arguments.pluginName)
+			and StructKeyExists(loc.plugins[arguments.pluginName], "pluginVersion")
+			and loc.plugins[arguments.pluginName].pluginVersion neq arguments.serviceVersionNum
+		>
+			<cfset loc.versionNum = loc.plugins[arguments.pluginName].pluginVersion>
+		<!--- Wheels 1.1.4+ doesn't store plugin version number, so grab it from zip file name if it exists --->
+		<cfelseif
+			StructKeyExists(loc.plugins, arguments.pluginName)
+			and not StructKeyExists(loc.plugins[arguments.pluginName], "pluginVersion")
+		>
+			<cfdirectory name="loc.pluginFiles" action="list" directory="#ExpandPath('plugins')#" filter="*.zip">
+			<cfquery name="loc.pluginFileName" dbtype="query">
+				SELECT
+					name
+				FROM
+					loc.pluginFiles
+				WHERE
+					LEFT(name, #Len(arguments.pluginName)#) =
+						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.pluginName#">
+				ORDER BY
+					name DESC
+			</cfquery>
+			<cfif loc.pluginFileName.RecordCount>
+				<cfset loc.versionNum = ListLast(loc.pluginFileName.name, "-")>
+				<cfset loc.versionNum = Replace(loc.versionNum, ".zip", "")>
+			<cfelse>
+				<cfset loc.versionNum = arguments.serviceVersionNum>
+			</cfif>
+		<!--- Otherwise, just show what's available from the web service --->
+		<cfelse>
+			<cfset loc.versionNum = arguments.serviceVersionNum>
+		</cfif>
+		
+		<cfreturn loc.versionNum>
+		
+	</cffunction>
 		
 </cfcomponent>
