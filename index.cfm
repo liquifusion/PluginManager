@@ -4,7 +4,7 @@
 
 <cfinclude template="css.cfm">
 
-<h1>PluginManager v1.0.3</h1>
+<h1>PluginManager v1.0.5</h1>
 <p>With the PluginManager, you can download and install all authorized plugins available from the <a href="http://cfwheels.org/plugins">Wheels&nbsp;Plugin&nbsp;Directory</a>. The &quot;Auto Install&quot; links provided will automatically download the plugin to this Wheels install and reload your application.</p>
 
 </cfoutput>
@@ -34,9 +34,9 @@
 					<a href="#plugin.info_url.XmlText#">#plugin.title.XmlText#</a>
 					<cfif 
 						StructKeyExists(application.wheels.plugins, plugin.name.XmlText)
-						and application.wheels.plugins[plugin.name.XmlText].pluginVersion neq plugin.version.XmlText
+						and application.wheels.plugins[plugin.name.XmlText].version neq plugin.version.XmlText
 					>
-						<small>Version #application.wheels.plugins[plugin.name.XmlText].pluginVersion#</small>
+						<small>Version #application.wheels.plugins[plugin.name.XmlText].version#</small>
 					<cfelse>
 						<small>Version #plugin.version.XmlText#</small>
 					</cfif>
@@ -46,7 +46,7 @@
 					<!--- Display upgrade link if newer version available --->
 					<cfif
 						StructKeyExists(application.wheels.plugins, plugin.name.XmlText)
-						and application.wheels.plugins[plugin.name.XmlText].pluginVersion neq plugin.version.XmlText
+						and application.wheels.plugins[plugin.name.XmlText].version neq plugin.version.XmlText
 					>
 						<li class="first">
 							<strong class="highlighter">Version #plugin.version.XmlText# Available:</strong>
