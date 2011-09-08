@@ -1,7 +1,7 @@
 <cfsetting enablecfoutputonly="true">
 
 <cfset pluginManager = {}>
-<cfset pluginManager.version = "1.0.5">
+<cfset pluginManager.version = "1.0.6">
 
 <cfoutput>
 

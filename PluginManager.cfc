@@ -85,21 +85,16 @@
 			StructKeyExists(loc.plugins, arguments.pluginName)
 			and not StructKeyExists(loc.plugins[arguments.pluginName], "pluginVersion")
 		>
-			<cfdirectory name="loc.pluginFiles" action="list" directory="#ExpandPath('plugins')#" filter="*.zip">
-			<cfquery name="loc.pluginFileName" dbtype="query">
-				SELECT
-					name
-				FROM
-					loc.pluginFiles
-				WHERE
-					LEFT(name, #Len(arguments.pluginName)#) =
-						<cfqueryparam cfsqltype="cf_sql_varchar" value="#arguments.pluginName#">
-				ORDER BY
-					name DESC
-			</cfquery>
-			<cfif loc.pluginFileName.RecordCount>
-				<cfset loc.versionNum = ListLast(loc.pluginFileName.name, "-")>
-				<cfset loc.versionNum = Replace(loc.versionNum, ".zip", "")>
+			<cfdirectory
+				name="loc.pluginFiles"
+				action="list"
+				directory="#ExpandPath('plugins')#"
+				filter="#arguments.pluginName#-*.zip"
+				sort="name DESC"
+			>
+			<cfif loc.pluginFiles.RecordCount>
+				<cfset loc.versionNum = ListLast(loc.pluginFiles.name, "-")>
+				<cfset loc.versionNum = ReplaceNoCase(loc.versionNum, ".zip", "")>
 			<cfelse>
 				<cfset loc.versionNum = arguments.serviceVersionNum>
 			</cfif>
